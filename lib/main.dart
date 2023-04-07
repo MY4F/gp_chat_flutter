@@ -5,6 +5,7 @@ import 'package:gp_chat_flutter/screens/signin_screen.dart';
 import 'screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gp_chat_flutter/screens/search.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +29,8 @@ class MyApp extends StatelessWidget {
           SignInScreen.screenRoute: (context) => SignInScreen(),
           RegistrationScreen.screenRoute: (context) => RegistrationScreen(),
           ChatScreen.screenRoute: (context) => ChatScreen(),
+          Search_Screen.screenRoute: (context) => Search_Screen(),
+
         });
   }
 }

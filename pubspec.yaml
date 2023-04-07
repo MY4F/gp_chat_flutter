@@ -40,10 +40,12 @@ dependencies:
   modal_progress_hud_nsn: ^0.3.0
   cloud_firestore: ^4.4.4
   firebase_storage: ^11.0.15
-  flutter_audio_recorder: ^0.5.5
-  path_provider: ^1.6.1
-  audioplayers: ^0.16.1
-  record: ^4.4.4
+  flutter_sound: ^9.2.13
+  permission_handler: ^9.2.0
+  path_provider: ^2.0.5
+  audioplayers: ^3.0.1
+  just_audio: ^0.9.32
+  flutter_file_dialog: ^3.0.0
 
 
 dev_dependencies:
