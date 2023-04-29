@@ -27,32 +27,34 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               children: [
                 Container(
                   height: 180,
-                  child: Image.asset('images/logo.png'),
+                  child: Image.asset('images/logo1.png'),
                 ),
                 Text(
-                  'MessageMe',
+                  'Voicey',
                   style: TextStyle(
                     fontSize: 40,
                     fontWeight: FontWeight.w900,
-                    color: Color(0xff2e386b),
+                    color: Colors.black,
                   ),
                 ),
               ],
             ),
             SizedBox(height: 30),
             MyButton(
-              color: Colors.yellow[900]!,
-              title: 'Sign in',
+              color: Colors.white,
+              title: "Sign In",
               onPressed: () {
                 Navigator.pushNamed(context, SignInScreen.screenRoute);
               },
+              textColor: Colors.black,
             ),
             MyButton(
-              color: Colors.blue[800]!,
-              title: 'register',
+              color: Colors.black,
+              title: 'Sign Up',
               onPressed: () {
                 Navigator.pushNamed(context, RegistrationScreen.screenRoute);
               },
+                textColor: Colors.white
             )
           ],
         ),

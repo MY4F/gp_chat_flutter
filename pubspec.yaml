@@ -46,6 +46,7 @@ dependencies:
   audioplayers: ^3.0.1
   just_audio: ^0.9.32
   flutter_file_dialog: ^3.0.0
+  http: ^0.13.5
 
 
 dev_dependencies:

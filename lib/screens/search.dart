@@ -23,24 +23,20 @@ class _Search_ScreenState extends State<Search_Screen> {
 
     data = data.isNotEmpty ? data : ModalRoute.of(context)?.settings.arguments as Map;
 
-    //print("eyyehdd");
-    //List<String> dataList = rcvdData['List'];
-
     List<dynamic> d=data['List'];
-    //print(d.length);
     if(dataList.isEmpty) {
-      for (int i = 0; i < (d.length / 3)-2; i++) {
+      for (int i = 0; i < (d.length / 3); i++) {
         dataList.add(d[i].toString());
       }
-      print(dataList);
     }
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         title: Container(
-          decoration: BoxDecoration(color: Colors.blue.shade100,
+          decoration: BoxDecoration(color: Colors.grey[300],
             borderRadius: BorderRadius.circular(30),
           ),
-
           child: TextField(
             onChanged: (value) {
               setState(() {
@@ -85,11 +81,10 @@ class _Search_ScreenState extends State<Search_Screen> {
         itemCount: _textController!.text.isNotEmpty? dataListOnSearch.length:dataList.length,
         itemBuilder: (context, index) {
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(15.0),
             child: Row(
               children: [
-                CircleAvatar(child: Icon(Icons.text_fields),),
-                SizedBox(width: 5,),
+                SizedBox(width: 10),
                 Text(_textController!.text.isNotEmpty? dataListOnSearch[index]:dataList[index],
                   style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)
               ],

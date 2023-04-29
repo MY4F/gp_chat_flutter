@@ -35,7 +35,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             children: [
               Container(
                 height: 180,
-                child: Image.asset('images/logo.png'),
+                child: Image.asset('images/logo1.png'),
               ),
               SizedBox(height: 50),
               TextField(
@@ -57,7 +57,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.orange,
+                      color: Colors.black,
                       width: 1,
                     ),
                     borderRadius: BorderRadius.all(
@@ -66,7 +66,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.blue,
+                      color: Colors.black,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.all(
@@ -95,7 +95,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.orange,
+                      color: Colors.black,
                       width: 1,
                     ),
                     borderRadius: BorderRadius.all(
@@ -104,7 +104,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.blue,
+                      color: Colors.black,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.all(
@@ -115,8 +115,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               ),
               SizedBox(height: 10),
               MyButton(
-                color: Colors.blue[800]!,
-                title: 'register',
+                color: Colors.black,
+                title: 'Register',
+                textColor: Colors.white,
                 onPressed: () async {
                   // print(email);
                   // print(password);

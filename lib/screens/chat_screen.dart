@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +12,7 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter_file_dialog/flutter_file_dialog.dart';
 import 'package:gp_chat_flutter/screens/search.dart';
-
+import 'package:http/http.dart' as http;
 final _firestore = FirebaseFirestore.instance;
 final chatList = [];
 Future<int> getAudioNumber() async{
@@ -113,6 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
     final int audioValue = await getAudioValueFromFirestore();
     String co = audioValue.toString();
     String destinationPath = '$externalStoragePath/audio$co.wav';
+
     //print(' here : dest: $destinationPath');
     //print(file);
 
@@ -134,6 +137,22 @@ class _ChatScreenState extends State<ChatScreen> {
     await documentReference.update({
       'audioNumber': val,
     });
+
+    //Server request region
+//https://gp-model.onrender.com/upload
+    final url = Uri.parse('http://127.0.0.1:5000/upload');
+  // Create a new multipart request with the POST method
+    final request = http.MultipartRequest('POST', url);
+  // Add the audio file to the request
+    request.files.add(await http.MultipartFile.fromPath('audio', destinationPath));
+  // Send the request
+    final response = await request.send();
+    final responseBody = await response.stream.bytesToString();
+    print("here response body");
+    print(responseBody);
+  // Print the response status code
+    print(response.statusCode);
+
   }
   //endregion
 
@@ -155,13 +174,14 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.yellow[900],
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         title: Row(
           children: [
-            Image.asset('images/logo.png', height: 25),
+            Image.asset('images/logo1.png', height: 25),
             SizedBox(width: 10),
-            Text('MessageMe'),
-            SizedBox(width: 135),
+            Text('Voicey Chat', style: TextStyle(color: Colors.black)),
+            SizedBox(width: 10),
             IconButton(
                 onPressed: (){
                   Navigator.pushNamed(context, Search_Screen.screenRoute, arguments: {
@@ -194,7 +214,7 @@ class _ChatScreenState extends State<ChatScreen> {
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: Colors.orange,
+                    color: Colors.black12,
                     width: 2,
                   ),
                 ),
@@ -241,7 +261,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         'text':messageText,
                         'sender':signedInUser.email,
                         'time':FieldValue.serverTimestamp(),
-                        
+
                       });
                       print('${messageText}   ${signedInUser.email}');
                     },
@@ -270,7 +290,6 @@ class MessageLine extends StatelessWidget {
   final String? sender;
   final String? audioNumber;
   final int? type;
-
 
   Future<String?> getExternalStoragePath() async {
     Directory? directory;

@@ -33,7 +33,7 @@ class _SignInScreenState extends State<SignInScreen> {
             children: [
               Container(
                 height: 180,
-                child: Image.asset('images/logo.png'),
+                child: Image.asset('images/logo1.png'),
               ),
               SizedBox(height: 50),
               TextField(
@@ -55,7 +55,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.orange,
+                      color: Colors.black,
                       width: 1,
                     ),
                     borderRadius: BorderRadius.all(
@@ -64,7 +64,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.blue,
+                      color: Colors.black,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.all(
@@ -93,7 +93,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.orange,
+                      color: Colors.black,
                       width: 1,
                     ),
                     borderRadius: BorderRadius.all(
@@ -102,7 +102,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.blue,
+                      color: Colors.black,
                       width: 2,
                     ),
                     borderRadius: BorderRadius.all(
@@ -113,8 +113,9 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               SizedBox(height: 10),
               MyButton(
-                color: Colors.yellow[900]!,
+                color: Colors.black,
                 title: 'Sign in',
+                textColor: Colors.white,
                 onPressed: () async {
                   setState(() {
                     showSpinner = true;
