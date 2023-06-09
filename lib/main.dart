@@ -6,7 +6,7 @@ import 'screens/welcome_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gp_chat_flutter/screens/search.dart';
-
+import 'package:gp_chat_flutter/screens/home_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -23,13 +23,14 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         // home: ChatScreen(),
-        initialRoute: _auth.currentUser !=null? ChatScreen.screenRoute: WelcomeScreen.screenRoute,
+        initialRoute: _auth.currentUser !=null? HomeScreen.screenRoute: WelcomeScreen.screenRoute,
         routes: {
           WelcomeScreen.screenRoute: (context) => WelcomeScreen(),
           SignInScreen.screenRoute: (context) => SignInScreen(),
           RegistrationScreen.screenRoute: (context) => RegistrationScreen(),
           ChatScreen.screenRoute: (context) => ChatScreen(),
           Search_Screen.screenRoute: (context) => Search_Screen(),
+          HomeScreen.screenRoute:(context) => HomeScreen()
 
         });
   }

@@ -3,6 +3,8 @@ import 'package:gp_chat_flutter/screens/chat_screen.dart';
 import 'package:gp_chat_flutter/widgets/my_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+final _firestore = FirebaseFirestore.instance;
 
 class RegistrationScreen extends StatefulWidget {
   static const String screenRoute = 'registration_screen';
@@ -127,6 +129,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
+                    await _firestore.collection('users').doc(email).set({});
+                    print("done");
                     Navigator.pushNamed(context, ChatScreen.screenRoute);
                     setState(() {
                       showSpinner = false;

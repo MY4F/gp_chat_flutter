@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gp_chat_flutter/screens/chat_screen.dart';
+import 'package:gp_chat_flutter/screens/home_screen.dart';
 import 'package:gp_chat_flutter/widgets/my_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+final _firestore = FirebaseFirestore.instance;
 
 class SignInScreen extends StatefulWidget {
   static const String screenRoute = 'signin_screen';
@@ -124,7 +127,8 @@ class _SignInScreenState extends State<SignInScreen> {
                     final user = await _auth.signInWithEmailAndPassword(
                         email: email, password: password);
                     if (user != null) {
-                      Navigator.pushNamed(context, ChatScreen.screenRoute);
+                      print("done");
+                      Navigator.pushNamed(context, HomeScreen.screenRoute);
                       setState(() {
                         showSpinner = false;
                       });
