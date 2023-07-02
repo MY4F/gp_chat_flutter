@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         // home: ChatScreen(),
-        initialRoute: _auth.currentUser !=null? SignInScreen.screenRoute: WelcomeScreen.screenRoute,
+        initialRoute: _auth.currentUser !=null? HomeScreen.screenRoute: WelcomeScreen.screenRoute,
         routes: {
           WelcomeScreen.screenRoute: (context) => WelcomeScreen(),
           SignInScreen.screenRoute: (context) => SignInScreen(),

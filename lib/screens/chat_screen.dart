@@ -13,7 +13,8 @@
   import 'package:gp_chat_flutter/screens/search.dart';
   import 'package:http/http.dart' as http;
   import 'dart:async';
-
+  import 'package:gp_chat_flutter/screens/email.dart';
+  import 'package:flutter_emoji/flutter_emoji.dart';
 final _firestore = FirebaseFirestore.instance;
 final _auth = FirebaseAuth.instance;
 late String email;
@@ -219,16 +220,22 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context,true),
+        ),
         title: Row(
           children: [
             Image.asset('images/logo1.png', height: 25),
             SizedBox(width: 10),
-            Text('Voicey Chat', style: TextStyle(color: Colors.black)),
+            Expanded(child: Text('Voicey Chat', style: TextStyle(color: Colors.black))),
             SizedBox(width: 10),
             IconButton(
                 onPressed: () async {
+                  print("from chat to search");
+                  print(email);
                   Navigator.pushNamed(context,Search_Screen.screenRoute, arguments: {
-                    'email':email
+                    'email':data['user']
                   }).then((value) {
                          // Receive the data here
                          setState(() {
@@ -241,15 +248,6 @@ class _ChatScreenState extends State<ChatScreen> {
             )
           ],
         ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              _auth.signOut();
-              Navigator.pop(context);
-            },
-            icon: Icon(Icons.close),
-          )
-        ],
       ),
       body: SafeArea(
         child: Column(
@@ -417,57 +415,62 @@ class _MessageLineState extends State<MessageLine> {
         highlightedIndex=-1;
       });
     });
-    return Padding(
-      padding: EdgeInsets.all(10),
-      child: Column(
-        crossAxisAlignment: (widget.sender==_auth.currentUser?.email) ?CrossAxisAlignment.end:CrossAxisAlignment.start,
-        children: [(widget.sender==_auth.currentUser?.email)?
-          Material(
-            elevation: 5,
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30),
-              bottomLeft:  Radius.circular(30),
-              bottomRight:  Radius.circular(30)
-            ),
-            color: ((widget.highlighted==true)? Colors.red:Colors.black),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-              child: widget.type==1? Text(
-                '${widget.text}',
-                style: TextStyle(fontSize: 15,color: Colors.white),
-              ):IconButton(onPressed: () async{
-                print(widget.audioNumber);
-                String? externalStoragePath = await getExternalStoragePath();
-                final player = AudioPlayer();
-                await player.play(DeviceFileSource('$externalStoragePath/audio${widget.audioNumber}.wav'));
-              },
+    return Row(
+      mainAxisAlignment: (widget.sender==_auth.currentUser?.email) ?MainAxisAlignment.end:MainAxisAlignment.start,
+      children: [ (widget.type==2? Text(EmojiParser().get('smile').code,style: TextStyle(fontSize: 20),):SizedBox(width: 0,)),
+        Padding(
+          padding: EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: (widget.sender==_auth.currentUser?.email) ?CrossAxisAlignment.end:CrossAxisAlignment.start,
+            children: [(widget.sender==_auth.currentUser?.email)?
+              Material(
+                elevation: 5,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  bottomLeft:  Radius.circular(30),
+                  bottomRight:  Radius.circular(30)
+                ),
+                color: ((widget.highlighted==true)? Colors.red:Colors.black),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                  child: widget.type==1? Text(
+                    '${widget.text}',
+                    style: TextStyle(fontSize: 15,color: Colors.white),
+                  ):IconButton(onPressed: () async{
+                    print(widget.audioNumber);
+                    String? externalStoragePath = await getExternalStoragePath();
+                    final player = AudioPlayer();
+                    await player.play(DeviceFileSource('$externalStoragePath/audio${widget.audioNumber}.wav'));
+                  },
+                      icon: Icon(Icons.start),color: Colors.white,),
+                ),
+              ):
+            Material(
+              elevation: 5,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(30),
+                  bottomLeft:  Radius.circular(30),
+                  bottomRight:  Radius.circular(30)
+              ),
+              color: ((widget.highlighted==true)? Colors.red:Colors.grey),
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
+                child: widget.type==1? Text(
+                  '${widget.text}',
+                  style: TextStyle(fontSize: 15,color: Colors.white),
+                ):IconButton(onPressed: () async{
+                  print(widget.audioNumber);
+                  String? externalStoragePath = await getExternalStoragePath();
+                  final player = AudioPlayer();
+                  await player.play(DeviceFileSource('$externalStoragePath/audio${widget.audioNumber}.wav'));
+                },
                   icon: Icon(Icons.start),color: Colors.white,),
+              ),
             ),
-          ):
-        Material(
-          elevation: 5,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30),
-              bottomLeft:  Radius.circular(30),
-              bottomRight:  Radius.circular(30)
-          ),
-          color: ((widget.highlighted==true)? Colors.red:Colors.grey),
-          child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10,horizontal: 20),
-            child: widget.type==1? Text(
-              '${widget.text}',
-              style: TextStyle(fontSize: 15,color: Colors.white),
-            ):IconButton(onPressed: () async{
-              print(widget.audioNumber);
-              String? externalStoragePath = await getExternalStoragePath();
-              final player = AudioPlayer();
-              await player.play(DeviceFileSource('$externalStoragePath/audio${widget.audioNumber}.wav'));
-            },
-              icon: Icon(Icons.start),color: Colors.white,),
+            ],
           ),
         ),
-        ],
-      ),
+      ],
     );
   }
 }

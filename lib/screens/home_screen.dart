@@ -15,6 +15,7 @@ import 'package:gp_chat_flutter/screens/search.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'package:gp_chat_flutter/screens/chat_screen.dart';
+import 'package:gp_chat_flutter/screens/email.dart';
 final _auth = FirebaseAuth.instance;
 
 final _firestore = FirebaseFirestore.instance;
@@ -92,6 +93,18 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
+        automaticallyImplyLeading: false,
+        actions: [
+          IconButton(
+            onPressed: () {
+              _auth.signOut();
+              Navigator.pop(context);
+            },
+            icon: Icon(Icons.logout),
+          )
+        ],
         title: Row(
           children: [
             Expanded(
@@ -114,7 +127,9 @@ class _HomeScreenState extends State<HomeScreen> {
               getCurrentUser();
               final user = _auth.currentUser;
               getUsers(user?.email);
-
+              UserEmail.Email = _textController?.text.toString();
+              print("print email class");
+              print(UserEmail.Email);
               // add doc and array for current user
               _firestore.collection('users').doc('${user?.email}').update({
                 'friends': FieldValue.arrayUnion([_textController?.text.toString()])
@@ -223,21 +238,35 @@ class UserBuilder extends StatelessWidget {
         return ListView.builder(
           itemCount: users.length,
           itemBuilder: (BuildContext context, int index) {
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 5),
+            return Card(
               child: TextButton.icon(
-                  onPressed: () async {
-                    Navigator.pushNamed(context,ChatScreen.screenRoute, arguments: {
-                      'user':users[index]
-                    });
-                  },
-                  style: TextButton.styleFrom(
-                      minimumSize: const Size.fromHeight(100)
+                onPressed: () async {
+                  UserEmail.Email = users[index];
+                  print("print email class");
+                  print(UserEmail.Email);
+                  Navigator.pushNamed(context, ChatScreen.screenRoute, arguments: {
+                    'user': users[index]
+                  });
+                },
+                style: TextButton.styleFrom(
+                  minimumSize: const Size.fromHeight(100),
+                  padding: EdgeInsets.all(16),
+                  backgroundColor: Colors.white,
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: BorderSide(color: Colors.grey),
                   ),
-                  icon: Image.asset('images/user2.png'),
-                  label: Text(users[index],style: TextStyle(fontSize: 20),)
-              )
+                  alignment: Alignment.topLeft
+                ),
+                icon: Image.asset('images/user4.png'),
+                label: Text(
+                  users[index],
+                  style: TextStyle(fontSize: 20,color: Colors.black),
+                ),
+              ),
             );
+
           },
         );
       },

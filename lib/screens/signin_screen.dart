@@ -128,7 +128,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         email: email, password: password);
                     if (user != null) {
                       print("done");
-                      Navigator.pushNamed(context, HomeScreen.screenRoute);
+                      Navigator.popAndPushNamed(context, HomeScreen.screenRoute);
                       setState(() {
                         showSpinner = false;
                       });
