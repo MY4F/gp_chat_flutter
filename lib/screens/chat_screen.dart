@@ -209,6 +209,8 @@ class _ChatScreenState extends State<ChatScreen> {
     print(data);
     setState(() {
       email = data['user'];
+      print("here is the email");
+      print(email);
     });
 
     
@@ -225,18 +227,6 @@ class _ChatScreenState extends State<ChatScreen> {
             SizedBox(width: 10),
             IconButton(
                 onPressed: () async {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => Search_Screen(),
-                  //   ),
-                  // ).then((value) {
-                  //   // Receive the data here
-                  //   setState(() {
-                  //     highlightedIndex = value;
-                  //     print(value);
-                  //   });
-                  // });
                   Navigator.pushNamed(context,Search_Screen.screenRoute, arguments: {
                     'email':email
                   }).then((value) {
@@ -270,7 +260,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
             Expanded(
               child: StreamBuilder(
-                stream: _firestore.collection('users').doc('momoteak6089@gmail.com').collection('yasser@gmail.com').orderBy('time').snapshots(),
+                stream: _firestore.collection('users').doc('${_auth.currentUser?.email}').collection(email).orderBy('time').snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (!snapshot.hasData) {
                     return Center(
@@ -492,7 +482,7 @@ class MessageStreamBuilder extends StatelessWidget {
 
 
     return StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('users').doc('momoteak6089@gmail.com').collection('yasser@gmail.com').orderBy('time').snapshots(),
+        stream: _firestore.collection('users').doc('${_auth.currentUser?.email}').collection('${email}').orderBy('time').snapshots(),
         builder: (context,snapshot) {
           List<MessageLine>  messageWidgets =[];
           if(!snapshot.hasData){

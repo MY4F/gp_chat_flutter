@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp_chat_flutter/screens/chat_screen.dart';
+import 'package:gp_chat_flutter/screens/home_screen.dart';
 import 'package:gp_chat_flutter/widgets/my_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -127,11 +128,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     showSpinner = true;
                   });
                   try {
+                    late int friendsLen;
                     final newUser = await _auth.createUserWithEmailAndPassword(
                         email: email, password: password);
-                    await _firestore.collection('users').doc(email).set({});
-                    print("done");
-                    Navigator.pushNamed(context, ChatScreen.screenRoute);
+                    await _firestore.collection('users').doc(email).set({'friends':[]});
+                    Navigator.pushNamed(context, HomeScreen.screenRoute);
                     setState(() {
                       showSpinner = false;
                     });

@@ -18,19 +18,20 @@ import 'package:gp_chat_flutter/screens/chat_screen.dart';
 final _auth = FirebaseAuth.instance;
 
 final _firestore = FirebaseFirestore.instance;
-
+Map data = {};
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
   static const String screenRoute = 'home_screen';
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-
+late int updatedFriendsLength = 0;
 class _HomeScreenState extends State<HomeScreen> {
   @override
   late List<String> users;
   final _auth = FirebaseAuth.instance;
   late User signedInUser;
+  TextEditingController? _textController = TextEditingController();
   void getCurrentUser() {
     try {
       final user = _auth.currentUser;
@@ -77,14 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final QuerySnapshot querySnapshot = await usersCollection.get();
     final List<QueryDocumentSnapshot> documents = querySnapshot.docs;
 
-    for(final doc in documents){
-      print(doc.data());
-    }
-
-    // final Stream<QuerySnapshot> querySnapshot  = await _firestore.collection('users').doc('${_auth.currentUser?.email}').collection('yasser@gmail.com').snapshots();
-    // print(querySnapshot);
   }
 
+  clear(){
+
+    setState(() {
+      _textController!.text='';
+    });
+  }
 
 
 
@@ -93,23 +94,47 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Row(
           children: [
+            Expanded(
+              child: TextField(
+                onChanged: (value) {
+                },
+                controller: _textController,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    contentPadding:EdgeInsets.all(15),
+                    hintText: "Type the text....",
+                ),
+
+              ),
+            ),
             IconButton(onPressed: () async{
               getCurrentUser();
               final user = _auth.currentUser;
               getUsers(user?.email);
-              // final user = _auth.currentUser;
-              // _firestore.collection('users').doc('${user?.email}').collection('mom4o@gmail.com').doc().set(
-              //     {
-              //       'sender':'momo',
-              //       'message':'hi'
-              //     });
-              // print("done");
+
+              // add doc and array for current user
+              _firestore.collection('users').doc('${user?.email}').update({
+                'friends': FieldValue.arrayUnion([_textController?.text.toString()])
+              });
+              _firestore.collection('users').doc('${user?.email}').collection('${_textController?.text.toString()}').doc().set({});
+
+              // add doc and array for user's new friend
+              _firestore.collection('users').doc('${_textController?.text.toString()}').update({
+                'friends': FieldValue.arrayUnion([user?.email])
+              });
+              _firestore.collection('users').doc('${_textController?.text.toString()}').collection('${user?.email}').doc().set({});
+
+              setState(() {
+              });
             },
-                icon: Icon(Icons.add))
+                icon: Icon(Icons.add)),
           ],
         ),
       ),
-      body: UserBuilder(),
+      body:UserBuilder(),
     );
   }
 }
@@ -190,6 +215,11 @@ class UserBuilder extends StatelessWidget {
             users.add(f);
           }
         }
+
+        if(users.length <1)
+          {
+            return Text('no friends to show');
+          }
         return ListView.builder(
           itemCount: users.length,
           itemBuilder: (BuildContext context, int index) {
@@ -207,19 +237,6 @@ class UserBuilder extends StatelessWidget {
                   icon: Image.asset('images/user2.png'),
                   label: Text(users[index],style: TextStyle(fontSize: 20),)
               )
-              // child: Row(
-              //   children: [
-              //     SafeArea(child: Image.asset('images/user2.png')),
-              //     SizedBox(width: 30),
-              //     Expanded(
-              //       child: ListTile(
-              //         onTap: (){},
-              //         title: Text(users[index],style: TextStyle(fontSize: 20),),
-              //       ),
-              //     )
-              //     // Text(users[index],style: TextStyle(fontSize: 20),)
-              //   ],
-              // ),
             );
           },
         );
